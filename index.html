@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary My Love 💕</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Mali & Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rose-pink': '#ffe4e6',
+                        'soft-pink': '#fbcfe8',
+                        'accent-pink': '#f43f5e',
+                        'deep-rose': '#e11d48',
+                        'pastel-yellow': '#fef08a',
+                        'pastel-blue': '#bae6fd',
+                        'pastel-purple': '#ddd6fe',
+                    },
+                    fontFamily: {
+                        'mali': ['Mali', 'cursive'],
+                        'prompt': ['Prompt', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Mali', cursive, 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fbcfe8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Heart Floating Animation Background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart-particle {
+            position: absolute;
+            bottom: -20px;
+            color: #f43f5e;
+            opacity: 0.6;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Vinyl Spin Animation for Music Button */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 6s linear infinite;
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            background-color: #f43f5e;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 640px) {
+            .envelope {
+                width: 420px;
+                height: 260px;
+            }
+        }
+
+        .envelope:hover {
+            transform: translateY(-5deg);
+        }
+
+        .envelope-lid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #e11d48;
+            transform-origin: top;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s;
+            z-index: 3;
+        }
+
+        @media (min-width: 640px) {
+            .envelope-lid {
+                border-left: 210px solid transparent;
+                border-right: 210px solid transparent;
+                border-top: 145px solid #e11d48;
+            }
+        }
+
+        .envelope-box {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid #fda4af;
+            border-right: 150px solid #fda4af;
+            border-bottom: 110px solid #fb7185;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 2;
+        }
+
+        @media (min-width: 640px) {
+            .envelope-box {
+                border-left: 210px solid #fda4af;
+                border-right: 210px solid #fda4af;
+                border-bottom: 145px solid #fb7185;
+            }
+        }
+
+        .envelope.open .envelope-lid {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 5%;
+            width: 90%;
+            height: 85%;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.6s ease 0.4s, opacity 0.6s ease 0.4s;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-80px);
+            z-index: 4;
+        }
+
+        @media (min-width: 640px) {
+            .envelope.open .letter {
+                transform: translateY(-110px);
+            }
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(244, 63, 94, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe4e6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f43f5e;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative text-gray-700">
+
+    <!-- Floating Background Hearts -->
+    <div id="heartsContainer" class="hearts-container"></div>
+
+    <!-- AUDIO EMBED SYSTEM -->
+    <audio id="bgMusic" loop preload="auto" src="love.mp3"></audio>
+
+    <!-- FLOATING VINYL MUSIC TOGGLE UI -->
+    <div class="fixed top-4 right-4 z-50 flex items-center">
+        <button id="musicToggle" class="group bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-full shadow-lg border border-pink-200 flex items-center gap-3 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+            <div class="relative w-8 h-8 rounded-full bg-gray-900 border-2 border-pink-300 flex items-center justify-center overflow-hidden shrink-0">
+                <div id="vinylDisk" class="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-tr from-gray-900 via-gray-700 to-gray-900 animate-spin-slow">
+                    <div class="w-3 h-3 bg-rose-500 rounded-full border border-white"></div>
+                </div>
+                <i id="musicOverlayIcon" class="fas fa-music text-xs text-white absolute"></i>
+            </div>
+            <div class="text-left pr-1">
+                <span id="musicStatusTitle" class="block text-xs font-bold text-rose-500 leading-tight"></span>
+                <span id="musicStatusSub" class="block text-[10px] text-gray-500"></span>
+            </div>
+        </button>
+    </div>
+
+    <!-- LOCK SCREEN OVERLAY -->
+    <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-rose-100/90 backdrop-blur-md transition-opacity duration-700 p-4">
+        <div class="glass-card max-w-md w-full p-8 rounded-3xl text-center shadow-2xl relative border-2 border-pink-200 transition-all duration-300 hover:scale-[1.01]">
+            <div class="w-20 h-20 bg-rose-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-rose-300 animate-bounce">
+                <i class="fas fa-heart text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-rose-600 mb-2">ยินดีต้อนรับครับคนเก่ง ❤️</h2>
+            <p class="text-gray-600 text-sm mb-6">กรุณาใส่รหัสผ่านวันสำคัญของเรา</p>
+
+            <form id="passcodeForm" class="space-y-4">
+                <div class="relative">
+                    <input type="password" id="passcodeInput" maxlength="8" placeholder="ไม่บอกหรอกรหัสอะไร" 
+                           class="w-full px-5 py-3 text-center text-lg tracking-widest rounded-full border-2 border-pink-300 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all bg-white/80 text-gray-700 placeholder-pink-300 shadow-inner">
+                </div>
+                <p id="passcodeError" class="text-rose-500 text-xs hidden flex items-center justify-center gap-1">
+                    <i class="fas fa-exclamation-circle"></i> รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้งนะคะอ้วน
+                </p>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform active:scale-95">
+                    ปลดล็อกความรัก ✨
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT -->
+    <div id="mainContent" class="hidden min-h-screen pb-20 relative z-10 opacity-0 transition-opacity duration-1000">
+
+        <!-- HERO SECTION -->
+        <header class="py-12 px-4 text-center relative overflow-hidden">
+            <div class="max-w-4xl mx-auto">
+                <span class="inline-block px-4 py-1.5 bg-rose-100 text-rose-600 rounded-full text-xs sm:text-sm font-semibold mb-4 border border-rose-200 shadow-sm animate-pulse">
+                    💕 Happy Anniversary 💕
+                </span>
+                <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold text-rose-600 mb-4 tracking-tight drop-shadow-sm">
+                    สุขสันต์วันครบรอบนะคะอ้วน
+                </h1>
+                <p class="text-base sm:text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
+                    ขอบคุณอ้วนมากๆนะคะ ที่อยู่กับเค้ามาจนถึงวันนี้ ถึงเค้าจะทำตัวแย่ไปเยอะเลย
+                </p>
+
+                <!-- COUNTDOWN TIMER CONTAINER -->
+                <div class="mt-8 glass-card rounded-2xl p-6 max-w-2xl mx-auto shadow-lg">
+                    <h3 class="text-sm font-semibold text-rose-500 uppercase tracking-wider mb-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-clock"></i> เราเดินทางผ่านกาลเวลามาด้วยกันแล้ว
+                    </h3>
+                    <div class="grid grid-cols-4 gap-2 sm:gap-4 text-center">
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <span id="days" class="block text-xl sm:text-3xl font-bold text-rose-500">0</span>
+                            <span class="text-xs text-gray-500">วัน</span>
+                        </div>
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <span id="hours" class="block text-xl sm:text-3xl font-bold text-rose-500">0</span>
+                            <span class="text-xs text-gray-500">ชั่วโมง</span>
+                        </div>
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <span id="minutes" class="block text-xl sm:text-3xl font-bold text-rose-500">0</span>
+                            <span class="text-xs text-gray-500">นาที</span>
+                        </div>
+                        <div class="bg-white/80 p-3 sm:p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <span id="seconds" class="block text-xl sm:text-3xl font-bold text-rose-500">0</span>
+                            <span class="text-xs text-gray-500">วินาที</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION 1: LOVE LETTER ENVELOPE -->
+        <section class="py-12 px-4 max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold text-rose-600 mb-2 flex items-center justify-center gap-2">
+                <i class="fas fa-envelope-open-text text-pink-500"></i> จดหมายถึงอ้วน
+            </h2>
+            <p class="text-xs sm:text-sm text-gray-500 mb-8">คลิกที่ซองจดหมายเพื่อเปิดอ่านข้อความความในใจ</p>
+
+            <div class="flex flex-col items-center justify-center">
+                <div class="envelope-wrapper mb-12">
+                    <div id="envelope" class="envelope">
+                        <div class="envelope-lid"></div>
+                        <div class="letter text-left">
+                            <div class="flex items-center justify-between border-b border-pink-100 pb-2 mb-2">
+                                <span class="text-xs font-bold text-rose-500"><i class="fas fa-heart"></i> ถึง อ้วน</span>
+                            </div>
+                            <p class="text-xs text-gray-600 line-clamp-4 leading-relaxed">
+                                กดปุ่มด้านล่างเพื่อเปิดอ่านจดหมายฉบับเต็ม
+                            </p>
+                        </div>
+                        <div class="envelope-box"></div>
+                    </div>
+                </div>
+
+                <button id="openLetterBtn" class="px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform active:scale-95 flex items-center gap-2">
+                    <i class="fas fa-heart-open"></i> <span>เปิดอ่านจดหมายรัก</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- LETTER MODAL / EXPANDED VIEW -->
+        <div id="letterModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card max-w-2xl w-full p-6 sm:p-8 rounded-3xl relative max-h-[90vh] overflow-y-auto border-2 border-pink-200">
+                <button id="closeLetterBtn" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 text-2xl w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="text-center mb-6">
+                    <span class="text-4xl">💌</span>
+                    <h3 class="text-2xl font-bold text-rose-600 mt-2">จดหมายรักฉบับพิเศษ</h3>
+                </div>
+                <div class="bg-white/90 p-6 rounded-2xl border border-pink-100 shadow-inner font-mali leading-relaxed text-gray-700">
+                    <div id="typewriterText" class="min-h-[180px] whitespace-pre-line text-sm sm:text-base"></div>
+                </div>
+                <div class="text-right mt-6">
+                    <p class="text-rose-500 font-bold text-sm">รักอ้วนเสมอและตลอดไป ❤️</p>
+                    <p class="text-xs text-gray-400 mt-1">จาก...คนที่ไม่เคยเลิกรักอ้วนเลย</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: MEMORIES TIMELINE GALLERY -->
+        <section class="py-12 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-rose-600 mb-2 flex items-center justify-center gap-2">
+                    <i class="fas fa-images text-pink-500"></i> เส้นทางความทรงจำของเรา
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-500">เรื่องราวแสนหวานที่เราได้สร้างร่วมกันมา</p>
+            </div>
+
+            <!-- Timeline items -->
+            <div id="timelineContainer" class="relative border-l-2 border-rose-300 ml-4 md:ml-1/2 space-y-8 md:space-y-12">
+                <!-- Timeline items rendered dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: VIDEO MEMORY (เพิ่มส่วนวิดีโอความทรงจำ) -->
+        <section class="py-12 px-4 max-w-4xl mx-auto text-center">
+            <div class="glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-pink-200">
+                <h2 class="text-2xl sm:text-3xl font-bold text-rose-600 mb-2 flex items-center justify-center gap-2">
+                    <i class="fas fa-video text-pink-500"></i> ดูนี้ด้วยนะคะ เค้าอัดเอาไว้
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-500 mb-6">มันอาจจะดูไม่มีอะไร มีเสียงรบกวนเยอะไปหน่อยก็เถอะ</p>
+
+                <!-- วิดีโอเพลเยอร์ -->
+                <div class="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden shadow-lg bg-black aspect-video border-4 border-white">
+                    <!-- 
+                      วิธีใส่คลิปวิดีโอของคุณ:
+                      1. นำไฟล์วิดีโอ (เช่น .mp4) มาไว้ในโฟลเดอร์เดียวกับไฟล์ index.html แล้วเปลี่ยนชื่อใน src เป็นชื่อไฟล์ของคุณ เช่น src="video.mp4"
+                    -->
+                    <video controls class="w-full h-full object-cover">
+                        <source src="Ui.mp4" type="video/mp4">
+                        เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ กรุณาอัปเดตเบราว์เซอร์
+                    </video>
+                </div>
+            </div>
+        </section>
+
+    <!-- PHOTO MODAL LIGHTBOX -->
+    <div id="photoModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative max-w-xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-pink-200">
+            <button id="closePhotoBtn" class="absolute top-3 right-3 z-10 bg-black/40 text-white hover:bg-rose-500 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImg" src="" alt="Memory" class="w-full h-64 sm:h-80 object-cover">
+            <div class="p-5">
+                <span id="modalDate" class="text-xs font-semibold text-rose-500 bg-rose-50 px-3 py-1 rounded-full border border-rose-100"></span>
+                <h4 id="modalTitle" class="text-lg font-bold text-gray-800 mt-3"></h4>
+                <p id="modalDesc" class="text-sm text-gray-600 mt-2 leading-relaxed"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ===================================================
+           CONFIGURATIONS & CUSTOMIZATIONS
+           =================================================== */
+        
+        // 1. Passcode เข้าเว็บ
+        const SPECIAL_PASSCODE = "1708"; 
+
+        // 2. วันที่เริ่มคบกัน: 17 สิงหาคม 2569 (2026-08-17)
+        const START_DATE = new Date(2026, 7, 17, 0, 0, 0); 
+
+        // 3. ข้อความในจดหมายรักฉบับเต็ม
+        const LOVE_LETTER_TEXT = `สุขสันต์วันครบรอบนะคะ วันนี้เป็นวันที่ 17 ตุลาคม 2569
+วันครบรอบของเรา ถึงเค้าจะทำตัวแย่ไปบ้าง ชอบไปงี่เง่า เอาแต่ใจหรือน้อยใจใส่อ้วนอยู่บ่อยๆ ก็เพราะเค้ารักอ้วนมากๆเลยไงละ เค้าขอบคุณนะคะ ที่อ้วนยังอยู่กับเค้าจนถึงทุกวันนี้ ขอบคุณที่คอยอยู่เป็นความสุขเป็นรอยยิ้มให้เค้า ถึงเราจะทะเลาะกันบ้าง ขอบคุณที่ยังไม่ปล่อยมือกันไปไหนนะคะ ต่อให้เราจะยังเป็นคนคุยกันเค้าก็อยากทำให้วันครบรอบของเราเป็นวันที่พิเศษ เพราะสำหรับเค้าอ้วนมีค่ามากๆ ขอบคุณทุกสำหรับทุกอย่าง อ้วนช่วยอยู่กับเค้าแบบนี้ไปนานๆเลยนะ เค้าอยากคอยดูรอยยิ้มที่สวยที่สุด การกระทำที่น่ารัก และอ้วนที่โคตรจะน่ารักของเค้าไปนานๆ ให้เค้าได้อยู่ดูแลรอยยิ้มนี้ไปตลอดเลยนะคะ เค้าสัญญาว่าเค้าจะเป็นคนที่ดีขึ้นให้มากกว่านี้ จะพยายามไม่ทำให้อ้วนต้องเหนื่อย ข้างๆอ้วนยังมีเค้าเสมอนะคะ ถ้าวันไหนเหนื่อยจนไม่ไหวหรือเครีดยรู้สึกแย่ อ้วนหันมากอดเค้าได้ตลอดเลยนะคะ`;
+
+        // 4. รายการความทรงจำ (Timeline)
+        const MEMORIES_DATA = [
+            {
+                date: "13 เมษายน 2569",
+                title: "วันแรกที่เราสองคนไปวิ่งด้วยกัน",
+                description: "จำได้ไหมคะ ช่วงนั้นเค้ามีความสุขมากเลยที่เค้าได้อยู่กับอ้วน และเป๋นช่วงที่ทำให้เค้าได้รู้ว่าเค้าชอบอ้วน",
+                image: "image/IMG_9015.jpg"
+            },
+            {
+                date: "3 มิถุนายน 2569",
+                title: "ช่วงที่เราไปวิ่งด้วยกัยบ่อยๆ",
+                description: "ช่วงนั้นเป็นช่วงที่เราไปวิ่งด้วยกันบ่อยมาก แล้วเค้าก็รู้ตัวมากด้วยว่าเค้าชอบอ้วนจริงๆ มันเป็นช่วงที่เค้ารู้สึกมากเลย",
+                image: "image/oo.jpg"
+            },
+            {
+                date: "17 กรกฎาคม 2569",
+                title: "วันที่ราไปสวนกัน",
+                description: "เป็นวันที่เราได้ไปสวยด้วยกัน โดยที่เรารู้ว่าเราสองคนต่างชอบกันรึป่าวนะ แต่เป็นช่วงที่เค้าบอกชอบอ้วน แต่วันนั้นกลับบ้านไปเราทะเลาะกันเลย แล้วก็เป็นเพราะเค้าด้วยไงเศร้าเลย",
+                image: "image/IMG_9020.jpg"
+            },
+            {
+                date: "8 กันยายน 2569",
+                title: "วันที่เราได้ไปหาอะไรกินด้วยกัน",
+                description: "วันนั้นเป็นวันที่มีความสุขมากเลย เป็นวันที่เค้าได้อยู่ใกล้อ้วนขนาดนี้ ได้อยู่ด้วยกัน ได้บีบแก้ม และได้ถ่ายรูปคู่กับอ้วนถึงจะแค่ไหล่แต่สำหรับเค้ามันดีมากเลย",
+                image: "image/EE07DBF2-E66B-47CB-917E-29432E5B0963(1).jpg"
+            },
+            {
+                date: "30 กันยายน 2569",
+                title: "วันที่เราได้ไปเที่ยวด้วยกันนนนน",
+                description: "วันนั้นเป็นวันที่ดีและมีความสุขที่สุดในชีวิตเค้าเลย เค้าชอบวันนั้นมาก เป็นวันที่เราได้อยู่ด้วยกันนานที่สุดและเค้าได้อยู่ใหล้อ้วนมากกก เค้าชอบมากเลยการได้อยู่กับอ้วน มันเป็นความสุขของเค้าจริงๆ อยากอยู่กับอ้วนไปนานนานนนนนนเลย",
+                image: "image/pp.jpg"
+            }
+        ];
+
+        /* ===================================================
+           MAIN APP SCRIPT LOGIC
+           =================================================== */
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initHeartsBackground();
+            setupLockScreen();
+            setupCountdown();
+            renderTimeline();
+            setupEnvelopeAndModal();
+            setupAudioSystem();
+        });
+
+        // 1. Floating Hearts Animation Background
+        function initHeartsBackground() {
+            const container = document.getElementById("heartsContainer");
+            const heartIcons = ["❤️", "💖", "💕", "💗", "💘"];
+
+            function createHeart() {
+                const heart = document.createElement("div");
+                heart.className = "heart-particle";
+                heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+                heart.style.fontSize = Math.random() * 12 + 14 + "px";
+                
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }
+
+            setInterval(createHeart, 400);
+        }
+
+        // 2. Lock Screen & Passcode Check
+        function setupLockScreen() {
+            const form = document.getElementById("passcodeForm");
+            const input = document.getElementById("passcodeInput");
+            const errorMsg = document.getElementById("passcodeError");
+            const lockScreen = document.getElementById("lockScreen");
+            const mainContent = document.getElementById("mainContent");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (input.value === SPECIAL_PASSCODE) {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+
+                    lockScreen.classList.add("opacity-0", "pointer-events-none");
+                    setTimeout(() => {
+                        lockScreen.style.display = "none";
+                        mainContent.classList.remove("hidden");
+                        setTimeout(() => {
+                            mainContent.classList.remove("opacity-0");
+                        }, 50);
+                    }, 700);
+
+                    // Trigger Music playback upon unlocking
+                    startMusicWithFallback();
+                } else {
+                    errorMsg.classList.remove("hidden");
+                    input.classList.add("animate-shake");
+                    setTimeout(() => {
+                        input.classList.remove("animate-shake");
+                    }, 400);
+                }
+            });
+        }
+
+        // 3. Countdown Timer Calculations
+        function setupCountdown() {
+            function updateTimer() {
+                const now = new Date();
+                const diff = now - START_DATE;
+
+                if (diff < 0) {
+                    document.getElementById("days").innerText = 0;
+                    document.getElementById("hours").innerText = 0;
+                    document.getElementById("minutes").innerText = 0;
+                    document.getElementById("seconds").innerText = 0;
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById("days").innerText = days;
+                document.getElementById("hours").innerText = hours;
+                document.getElementById("minutes").innerText = minutes;
+                document.getElementById("seconds").innerText = seconds;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // 4. Envelope Animation & Typewriter Letter Reveal
+        function setupEnvelopeAndModal() {
+            const envelope = document.getElementById("envelope");
+            const openLetterBtn = document.getElementById("openLetterBtn");
+            const letterModal = document.getElementById("letterModal");
+            const closeLetterBtn = document.getElementById("closeLetterBtn");
+            const typewriterText = document.getElementById("typewriterText");
+
+            let typewriterIndex = 0;
+            let typewriterTimer = null;
+
+            function openEnvelope() {
+                envelope.classList.add("open");
+                
+                setTimeout(() => {
+                    letterModal.classList.remove("hidden");
+                    startTypewriter();
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 1000);
+            }
+
+            envelope.addEventListener("click", openEnvelope);
+            openLetterBtn.addEventListener("click", openEnvelope);
+
+            closeLetterBtn.addEventListener("click", () => {
+                letterModal.classList.add("hidden");
+            });
+
+            function startTypewriter() {
+                typewriterText.innerHTML = "";
+                typewriterIndex = 0;
+                clearInterval(typewriterTimer);
+
+                typewriterTimer = setInterval(() => {
+                    if (typewriterIndex < LOVE_LETTER_TEXT.length) {
+                        typewriterText.innerHTML += LOVE_LETTER_TEXT.charAt(typewriterIndex);
+                        typewriterIndex++;
+                    } else {
+                        clearInterval(typewriterTimer);
+                    }
+                }, 35);
+            }
+        }
+
+        // 5. Timeline Rendering & Photo Lightbox Modal
+        function renderTimeline() {
+            const container = document.getElementById("timelineContainer");
+            const photoModal = document.getElementById("photoModal");
+            const closePhotoBtn = document.getElementById("closePhotoBtn");
+
+            MEMORIES_DATA.forEach((item, index) => {
+                const isEven = index % 2 === 0;
+                const timelineItem = document.createElement("div");
+                timelineItem.className = "relative pl-6 md:pl-0 flex flex-col md:flex-row items-center";
+
+                timelineItem.innerHTML = `
+                    <div class="absolute -left-[9px] md:left-1/2 md:-ml-[9px] w-4 h-4 bg-rose-500 rounded-full border-4 border-white shadow-md z-10"></div>
+                    
+                    <div class="w-full md:w-1/2 ${isEven ? 'md:pr-10 md:text-right' : 'md:pl-10 md:ml-auto'}">
+                        <div class="glass-card p-4 sm:p-5 rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer memory-card">
+                            <div class="relative overflow-hidden rounded-xl h-44 sm:h-52 mb-3">
+                                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            </div>
+                            <span class="text-xs font-semibold text-rose-500 bg-rose-100 px-2.5 py-1 rounded-full">${item.date}</span>
+                            <h3 class="text-base sm:text-lg font-bold text-gray-800 mt-2">${item.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+
+                const card = timelineItem.querySelector(".memory-card");
+                card.addEventListener("click", () => {
+                    document.getElementById("modalImg").src = item.image;
+                    document.getElementById("modalTitle").innerText = item.title;
+                    document.getElementById("modalDate").innerText = item.date;
+                    document.getElementById("modalDesc").innerText = item.description;
+                    photoModal.classList.remove("hidden");
+                });
+
+                container.appendChild(timelineItem);
+            });
+
+            closePhotoBtn.addEventListener("click", () => {
+                photoModal.classList.add("hidden");
+            });
+        }
+
+        /* ===================================================
+           6. EMBEDDED AUDIO SYSTEM WITH SYNTHESIZER FALLBACK
+           =================================================== */
+        const bgMusic = document.getElementById("bgMusic");
+        const musicToggle = document.getElementById("musicToggle");
+        const vinylDisk = document.getElementById("vinylDisk");
+        const musicStatusSub = document.getElementById("musicStatusSub");
+        const musicOverlayIcon = document.getElementById("musicOverlayIcon");
+
+        let isPlaying = false;
+        let synthAudioContext = null;
+        let synthInterval = null;
+
+        function setUIPlayingState(active) {
+            isPlaying = active;
+            if (active) {
+                vinylDisk.classList.add("animate-spin-slow");
+                musicOverlayIcon.className = "fas fa-music text-xs text-rose-300 animate-pulse";
+                musicStatusSub.innerText = "กำลังเล่นอยู่";
+            } else {
+                vinylDisk.classList.remove("animate-spin-slow");
+                musicOverlayIcon.className = "fas fa-pause text-xs text-white";
+                musicStatusSub.innerText = "แตะเพื่อ เล่นต่อ";
+            }
+        }
+
+        function startMusicWithFallback() {
+            // Attempt playing HTML5 Audio element
+            bgMusic.play().then(() => {
+                setUIPlayingState(true);
+            }).catch((err) => {
+                console.log("HTML5 audio playback failed, fallback to Synthesized Melody", err);
+                startSynthesizedRomanticMelody();
+            });
+        }
+
+        function pauseMusicAll() {
+            bgMusic.pause();
+            if (synthInterval) {
+                clearInterval(synthInterval);
+                synthInterval = null;
+            }
+            setUIPlayingState(false);
+        }
+
+        function setupAudioSystem() {
+            musicToggle.addEventListener("click", () => {
+                if (isPlaying) {
+                    pauseMusicAll();
+                } else {
+                    startMusicWithFallback();
+                }
+            });
+
+            // Error listener to fallback to Web Audio API synthesized piano tone
+            bgMusic.addEventListener("error", () => {
+                console.warn("External MP3 load error, fallback to built-in Synth Melody.");
+            });
+        }
+
+        // Web Audio API Romantic Synthesizer Fallback (เล่นทำนองหวานๆ กรณีไม่สามารถโหลดไฟล์ MP3 ได้)
+        function startSynthesizedRomanticMelody() {
+            if (!synthAudioContext) {
+                synthAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (synthAudioContext.state === 'suspended') {
+                synthAudioContext.resume();
+            }
+
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 392.00, 293.66]; // C, E, G, C5, A, F, G, D
+            let noteIdx = 0;
+
+            function playSynthNote(freq) {
+                try {
+                    const osc = synthAudioContext.createOscillator();
+                    const gain = synthAudioContext.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, synthAudioContext.currentTime);
+
+                    gain.gain.setValueAtTime(0.12, synthAudioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, synthAudioContext.currentTime + 1.2);
+
+                    osc.connect(gain);
+                    gain.connect(synthAudioContext.destination);
+
+                    osc.start();
+                    osc.stop(synthAudioContext.currentTime + 1.2);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            if (synthInterval) clearInterval(synthInterval);
+            synthInterval = setInterval(() => {
+                playSynthNote(notes[noteIdx]);
+                noteIdx = (noteIdx + 1) % notes.length;
+            }, 600);
+
+            setUIPlayingState(true);
+        }
+    </script>
+</body>
+</html>
